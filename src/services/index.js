@@ -125,21 +125,22 @@ export const newPost = (saveTextPost) => {
   })
 };
 
-export const post = (name, date, text, like, id) => {
+export const post = (name, date, text, like, id, userIdPost) => {
   const post = document.createElement('div');
-  console.log(id)
   post.innerHTML = `
      <p class="nameUser">${name}</p>
      <p class="textUser">${text}</p>
      <p class="dateUser">${date}</p>
-     <p class="likeUser">${like}</p>
+     <p class="likeUser">${like.length}</p>
      <button class="like">curtir</button>
      <button class="edit">editar</button>
+     <button class="delet">apagar</button>
     `;
   const editButton = post.querySelectorAll('.edit');
   const likePost = post.querySelectorAll(".like");
   likePost.forEach((button) => {
     button.addEventListener("click", (e) => {
+
       const boxPost = e.target.parentNode
       const likeUsers = boxPost.querySelector(".likeUser")
       const user = firebase.auth().currentUser.displayName;
@@ -183,7 +184,68 @@ export const post = (name, date, text, like, id) => {
   });
   return post;
 };
+  const boxPost = e.target.parentNode;
+  const likeUsers = boxPost.querySelector(".likeUser");
+  const uid = firebase.auth().currentUser.uid
+  likePosts(likeUsers, id, like, uid)
 
+    })
+  })
+  const deletPost = post.querySelectorAll(".delet");
+  deletPost.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.target.parentNode;
+      deletPosts(userIdPost,id);
+    })
+  })
+
+  return post;
+}
+
+export const deletPosts = (userIdPost,id) => {
+
+  const docs = firebase.firestore().collection("post").doc(id)
+  const uid = firebase.auth().currentUser.uid
+  
+  if (userIdPost === uid) {
+    window.confirm("Você deseja apagar essa publicação?")
+    docs.delete().then(function () {
+      getPosts()
+    }).catch(function (error) {
+      console.error("Não foi possivel excluir", error);
+    });
+  } else {
+    alert("Não é possivel excluir post de outros usuarios")
+  }
+}
+
+export const likePosts = (likeUsers, id, like, uid) => {
+  const docs = firebase.firestore().collection("post").doc(id);
+
+  if (like.includes(uid)) {
+    let indice = like.indexOf(uid);
+    while (indice >= 0) {
+      like.splice(indice, 1);
+      indice = like.indexOf(uid)
+    }
+    docs.update({
+      like
+    }).then(function () {
+      docs.onSnapshot(function (doc) {
+        likeUsers.innerHTML = doc.data().like.length
+      })
+    })
+  } else {
+    like.push(uid)
+    docs.update({
+      like
+    }).then(function () {
+      docs.onSnapshot(function (doc) {
+        likeUsers.innerHTML = doc.data().like.length
+      })
+    })
+  }
+}
 export const getPosts = () => {
 
   firebase.firestore().collection("post").orderBy('date', 'desc')
@@ -192,12 +254,13 @@ export const getPosts = () => {
       feedPost.innerHTML = ``
       textPost.value = "";
       querySnapshot.forEach(function (doc) {
-        const id = doc.id
+        const id = doc.id;
+        const userIdPost = doc.data().uid;
         const name = doc.data().name;
         const text = doc.data().text;
         const date = doc.data().date;
         const like = doc.data().like;
-        feedPost.appendChild(post(name, date, text, like, id));
+        feedPost.appendChild(post(name, date, text, like, id, userIdPost));
 
       });
     });
