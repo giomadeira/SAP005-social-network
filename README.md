@@ -36,6 +36,7 @@ Realizamos uma pesquisa com nossos usuários em potencial para definirmos o que 
 Para este projeto, trabalhamos com as seguintes histórias de usuário, de acordo com as necessidades apontadas em nossa pesquisa:
 
 ![imagem](./src/images/readme/historia.user1.png)
+
 ![imagem](./src/images/readme/historia.user2.png)
 
 ### Protótipos
@@ -58,6 +59,8 @@ _*Versão Desktop*_
 - Criação da página de perfil dos nossos usuários;
 
 - Envio de mensagens privadas;
+
+- Implementar a parte de notificações;
 
 - Alterar foto de perfil.
 

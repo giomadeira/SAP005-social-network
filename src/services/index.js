@@ -156,6 +156,14 @@ export const post = (name, date, text, like, id, userIdPost) => {
         })
     })
   })
+  const deletPost = post.querySelectorAll(".delet");
+  deletPost.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.target.parentNode;
+      deletPosts(userIdPost,id);
+    })
+  })
+
   editButton.forEach((button) => {
     button.addEventListener('click', (e) => {
       const boxPost = e.target.parentNode
@@ -184,24 +192,7 @@ export const post = (name, date, text, like, id, userIdPost) => {
   });
   return post;
 };
-  const boxPost = e.target.parentNode;
-  const likeUsers = boxPost.querySelector(".likeUser");
-  const uid = firebase.auth().currentUser.uid
-  likePosts(likeUsers, id, like, uid)
-
-    })
-  })
-  const deletPost = post.querySelectorAll(".delet");
-  deletPost.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      e.target.parentNode;
-      deletPosts(userIdPost,id);
-    })
-  })
-
-  return post;
-}
-
+  
 export const deletPosts = (userIdPost,id) => {
 
   const docs = firebase.firestore().collection("post").doc(id)
