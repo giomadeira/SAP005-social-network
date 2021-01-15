@@ -50,6 +50,11 @@ _*Versão Mobile*_
 _*Versão Desktop*_
 ![imagem](./src/images/readme/prototipo.png)
 
+_*Visualização da página*_
+
+![Watch the video](https://media.giphy.com/media/YOaozd4lVfvLbcPiLb/giphy.gif)
+
+
 ## 4. Implementações futuras
 
 - Permitir incluir imagens nas postagens;
