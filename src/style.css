@@ -167,19 +167,75 @@ html {
     display: flex;
 }
 
-.menu-icon{
+ .menu-icon{
     margin-top: 5px;
     height: 30px;
-    margin-right: 10vw;
-}
-.logOut{
-    margin-right: 0;
+    margin-right: 8vw;
 }
 .navMenu{
+    padding: 0;
     display: flex;
+    flex-wrap: wrap;
     list-style: none;
     justify-content: center;
-    width: 100vw;
-    margin:0;
-    
+    width: 100%;
+    margin: 0;
+} 
+.containerFeed{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+.creatPost{
+    border-radius:20px ;
+    background-color: rgba(122, 120, 120, 0.247);
+    width: 80vw;
+    height: 15vh;
+    padding: 10px;
+    margin-top: 2vh;
+}
+.creatText{
+    border-radius:20px ;
+    width: 95%;
+    height: 70%;
+}
+.creatBtn{
+    border-radius: 20px;
+    background-color: rgb(224, 105, 8);
+    color: white;
+    border: currentColor;
+    height: 3.5vh;
+}
+.post{
+    border-radius:20px ;
+    background-color: rgba(139, 134, 134, 0.247);
+    width: 80vw;
+    padding: 10px;
+    margin-top: 2vh;
+}
+.like-icon{
+    height: 28px;
+    cursor: pointer;
+}
+.grup{
+    display: contents;
+}
+
+.textUserEdit{
+    border-radius: 20px;
+    width: 80%;
+    height: 10vh;
+}
+
+.nameUser {
+    text-align: center;
+    padding: 2px;
+    margin: 2%;
+    background-color:  rgba(122, 120, 120, 0.247);
+    border-radius:20px ;
+}
+.dateUser{
+    text-align: end;
+    font-size: 10px;
+}
+
