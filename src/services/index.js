@@ -28,7 +28,7 @@ export const loginGoogle = () => {
       firebase.firestore().doc(`/users/${uid}`).set({
         email: user.email,
         name: user.displayName,
-      })
+      });
     })
     .catch((error) => {
       const errorMessage = error.message;
@@ -105,7 +105,7 @@ export const Navigation = () => {
   });
 
   return navigation;
-}
+};
 
 export const newPost = (saveTextPost) => {
 
@@ -133,15 +133,61 @@ export const post = (name, date, text, like, id, userIdPost) => {
      <p class="dateUser">${date}</p>
      <p class="likeUser">${like.length}</p>
      <button class="like">curtir</button>
+     <button class="edit">editar</button>
      <button class="delet">apagar</button>
     `;
+  const editButton = post.querySelectorAll('.edit');
   const likePost = post.querySelectorAll(".like");
   likePost.forEach((button) => {
     button.addEventListener("click", (e) => {
-      const boxPost = e.target.parentNode;
-      const likeUsers = boxPost.querySelector(".likeUser");
-      const uid = firebase.auth().currentUser.uid
-      likePosts(likeUsers, id, like, uid)
+
+      const boxPost = e.target.parentNode
+      const likeUsers = boxPost.querySelector(".likeUser")
+      const user = firebase.auth().currentUser.displayName;
+      const docs = firebase.firestore().collection("post").doc(id);
+
+      like.push(user)
+
+      docs.update({
+          like
+        })
+        .then(function () {
+          likeUsers.innerHTML = like
+        })
+    })
+  })
+  editButton.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      const boxPost = e.target.parentNode
+      const texto = boxPost.querySelector(".textUser");
+      const data = boxPost.querySelector(".dateUser");
+      const paramText = text;
+      texto.innerHTML = `<textarea class="textPost">${paramText}</textarea>
+      <button class="editPost">Editar</button>`
+      const editSend = texto.querySelector(".editPost");
+      editSend.addEventListener('click', () => {
+        const textNew = texto.querySelector(".textPost");
+        const textValue = textNew.value;
+        const docsEditar = firebase.firestore().collection("post").doc(id);
+
+        docsEditar.update({
+          text: textValue,
+          date: (new Date()).toLocaleString(),
+        }).then(function () {
+          docsEditar.onSnapshot(function (doc) {
+            texto.innerHTML = doc.data().text,
+              data.innerHTML = doc.data().date
+          })
+        });
+      });
+    });
+  });
+  return post;
+};
+  const boxPost = e.target.parentNode;
+  const likeUsers = boxPost.querySelector(".likeUser");
+  const uid = firebase.auth().currentUser.uid
+  likePosts(likeUsers, id, like, uid)
 
     })
   })
@@ -200,7 +246,6 @@ export const likePosts = (likeUsers, id, like, uid) => {
     })
   }
 }
-
 export const getPosts = () => {
 
   firebase.firestore().collection("post").orderBy('date', 'desc')
