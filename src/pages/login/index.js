@@ -10,7 +10,7 @@ export const Login = () => {
        <form  id ="formLogin" class="login">
          <input id="txtEmail" class="btn" type="text"  placeholder="Email" >
          <input id="txtPassword" class="btn" type="password" placeholder="Senha" autocomplete="off" >     
-         <p>Esqueceu sua senha ?<a href="images/construc.gif" target="_blank">Clique aqui.</a>
+         <p>Esqueceu sua senha? <a href="images/construc.gif" target="_blank">Clique aqui.</a>
          <p>
          <button id="signup-btn" class="buttonPage"> Login </button><br>
          <button id="googleLogin" class="buttonPage btnGoogle"> <img src="images/google.png" class="login-icon"> Login Google </button>

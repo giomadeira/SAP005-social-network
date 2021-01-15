@@ -2,7 +2,7 @@ import {  Navigation, newPost, getPosts, post} from "/services/index.js"
 
 export const Feed = () => {
   const nav = Navigation();
-  window.onload = getPosts()
+  window.onload = getPosts();
 
   const rootElement = document.createElement('div');
   rootElement.appendChild(nav);
@@ -28,9 +28,8 @@ export const Feed = () => {
   creatPost.addEventListener("click", (event) => {
     event.preventDefault();
     const saveTextPost = textPost.value;
-    newPost(saveTextPost)
-    getPosts()
+    newPost(saveTextPost);
+    getPosts();
   });
-
   return rootElement;
 };

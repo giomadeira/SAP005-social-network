@@ -28,7 +28,7 @@ export const loginGoogle = () => {
       firebase.firestore().doc(`/users/${uid}`).set({
         email: user.email,
         name: user.displayName,
-      })
+      });
     })
     .catch((error) => {
       const errorMessage = error.message;
@@ -105,7 +105,7 @@ export const Navigation = () => {
   });
 
   return navigation;
-}
+};
 
 export const newPost = (saveTextPost) => {
 
@@ -133,6 +133,7 @@ export const newPost = (saveTextPost) => {
 export const post = (name, date, text, like, id, userIdPost) => {
   const post = document.createElement('div');
   post.innerHTML = `
+
      <div class="post"> 
        <button class="delet creatBtn ">apagar</button>
        <button class="edit  creatBtn ">editar</button>
@@ -143,14 +144,24 @@ export const post = (name, date, text, like, id, userIdPost) => {
        <p class="likeUser grup">${like.length}</p>
      </div> 
     `;
+  const editButton = post.querySelectorAll('.edit');
   const likePost = post.querySelectorAll(".like");
   likePost.forEach((button) => {
     button.addEventListener("click", (e) => {
-      const boxPost = e.target.parentNode;
-      const likeUsers = boxPost.querySelector(".likeUser");
-      const uid = firebase.auth().currentUser.uid
-      likePosts(likeUsers, id, like, uid)
 
+      const boxPost = e.target.parentNode
+      const likeUsers = boxPost.querySelector(".likeUser")
+      const user = firebase.auth().currentUser.displayName;
+      const docs = firebase.firestore().collection("post").doc(id);
+
+      like.push(user)
+
+      docs.update({
+          like
+        })
+        .then(function () {
+          likeUsers.innerHTML = like
+        })
     })
   })
   const deletPost = post.querySelectorAll(".delet");
@@ -170,9 +181,8 @@ export const post = (name, date, text, like, id, userIdPost) => {
       editPosts(userIdPost, id, editText, editData, text)
     })
   })
-
   return post;
-}
+};
 
 export const editPosts = (userIdPost, id, editText, editData, text) => {
 
@@ -208,8 +218,8 @@ export const editPosts = (userIdPost, id, editText, editData, text) => {
   }
 }
 
-export const deletPosts = (userIdPost, id) => {
-
+  
+export const deletPosts = (userIdPost,id) => {
   const docs = firebase.firestore().collection("post").doc(id)
   const uid = firebase.auth().currentUser.uid
 
@@ -256,7 +266,6 @@ export const likePosts = (likeUsers, id, like, uid) => {
     })
   }
 }
-
 export const getPosts = () => {
 
   firebase.firestore().collection("post").orderBy('date', 'desc')

@@ -16,7 +16,6 @@ export const Registry = () => {
          </div>
      <div>
     `;
-
   const txtName = rootElement.querySelector('#txtName');
   const txtEmail = rootElement.querySelector('#txtEmail');
   const txtPassword = rootElement.querySelector('#txtPassword');
