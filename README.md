@@ -20,7 +20,7 @@ Projeto realizado durante o [**Bootcamp Laboratória - SAP005**]("http://laborat
 
 Olimpo é a rede social dos apaixonados por esportes e atividades físicas. Criada para unir pessoas que queiram compartilhar seus treinos diários, conquistas em equipe ou participar de conversas e debates sobre este universo.
 
-*Para fazer parte do Olimpo acesse:* 
+*Para fazer parte do Olimpo acesse:* https://rede-social-db4df.web.app/
 
 ## 3. Definições do produto
 
