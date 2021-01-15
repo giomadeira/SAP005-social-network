@@ -11,10 +11,9 @@ export const Feed = () => {
     const contentElement = document.createElement('div');
     contentElement.innerHTML = `
     <div class="containerFeed">
-     <h1> feed </h1>
-     <form>
-      <textarea id="textPost" cols="30" rows="5" placeholder="escreva aqui..."></textarea>
-      <button id="creatPost" >Post</button>
+     <form class= "creatPost">
+      <textarea id="textPost" class= "creatText" placeholder="escreva aqui..."></textarea>
+      <button id="creatPost" class= "creatBtn">Enviar</button>
      </form>
      <div id="feedPost"></div>
     </div>

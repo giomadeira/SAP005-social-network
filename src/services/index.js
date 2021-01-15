@@ -109,31 +109,39 @@ export const Navigation = () => {
 
 export const newPost = (saveTextPost) => {
 
-  const user = firebase.auth().currentUser;
-  const docFirestore = firebase.firestore();
-
-  docFirestore.collection(`post`).add({
-    name: user.displayName,
-    text: saveTextPost,
-    date: (new Date()).toLocaleString(),
-    uid: user.uid,
-    like: [],
-    comment: [],
-
-  }).catch(() => {
+  if (saveTextPost === "") {
     alert("Não foi possível publicar, tente novamente.")
-  })
+  } else {
+    const user = firebase.auth().currentUser;
+    const docFirestore = firebase.firestore();
+
+    docFirestore.collection(`post`).add({
+      name: user.displayName,
+      text: saveTextPost,
+      date: (new Date()).toLocaleString(),
+      uid: user.uid,
+      like: [],
+      comment: [],
+
+    }).catch(() => {
+      alert("Não foi possível publicar, tente novamente.")
+    })
+
+  }
 };
 
 export const post = (name, date, text, like, id, userIdPost) => {
   const post = document.createElement('div');
   post.innerHTML = `
-     <p class="nameUser">${name}</p>
-     <p class="textUser">${text}</p>
-     <p class="dateUser">${date}</p>
-     <p class="likeUser">${like.length}</p>
-     <button class="like">curtir</button>
-     <button class="delet">apagar</button>
+     <div class="post"> 
+       <button class="delet creatBtn ">apagar</button>
+       <button class="edit  creatBtn ">editar</button>
+       <p class="nameUser ">${name}</p>
+       <p class="dateUser ">${date}</p>
+       <p class="textUser ">${text}</p>
+       <img src="images/fire.png" class="like-icon like">
+       <p class="likeUser grup">${like.length}</p>
+     </div> 
     `;
   const likePost = post.querySelectorAll(".like");
   likePost.forEach((button) => {
@@ -149,22 +157,68 @@ export const post = (name, date, text, like, id, userIdPost) => {
   deletPost.forEach((button) => {
     button.addEventListener("click", (e) => {
       e.target.parentNode;
-      deletPosts(userIdPost,id);
+      deletPosts(userIdPost, id);
+    })
+  })
+  const editPost = post.querySelectorAll(".edit");
+  editPost.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const boxPost = e.target.parentNode;
+      const editText = boxPost.querySelector(".textUser");
+      const editData = boxPost.querySelector(".dateUser");
+
+      editPosts(userIdPost, id, editText, editData, text)
     })
   })
 
   return post;
 }
 
-export const deletPosts = (userIdPost,id) => {
+export const editPosts = (userIdPost, id, editText, editData, text) => {
+
+  const uid = firebase.auth().currentUser.uid
+
+  if (userIdPost === uid) {
+    const print = text
+    editText.innerHTML = `
+      <textarea class="textUserEdit">${print}</textarea>
+      <button class="send creatBtn">concluir</button>
+    `
+    const editSend = editText.querySelector(".send")
+    editSend.addEventListener("click", () => {
+      const textNew = editText.querySelector(".textUserEdit");
+      const textEditPost = textNew.value;
+
+      const docs = firebase.firestore().collection("post").doc(id)
+
+      docs.update({
+        text: textEditPost,
+        date: (new Date()).toLocaleString(),
+      }).then(function () {
+        docs.onSnapshot(function (doc) {
+          editText.innerHTML = doc.data().text
+          editData.innerHTML = doc.data().date
+
+        })
+      })
+    })
+
+  } else {
+    alert("Não é possivel excluir post de outros usuarios")
+  }
+}
+
+export const deletPosts = (userIdPost, id) => {
 
   const docs = firebase.firestore().collection("post").doc(id)
   const uid = firebase.auth().currentUser.uid
-  
+
   if (userIdPost === uid) {
     window.confirm("Você deseja apagar essa publicação?")
     docs.delete().then(function () {
-      getPosts()
+      docs.onSnapshot(function () {
+        getPosts()
+      })
     }).catch(function (error) {
       console.error("Não foi possivel excluir", error);
     });
@@ -186,7 +240,8 @@ export const likePosts = (likeUsers, id, like, uid) => {
       like
     }).then(function () {
       docs.onSnapshot(function (doc) {
-        likeUsers.innerHTML = doc.data().like.length
+        const likes = doc.data().like
+        likeUsers.innerHTML = likes.length
       })
     })
   } else {
@@ -195,7 +250,8 @@ export const likePosts = (likeUsers, id, like, uid) => {
       like
     }).then(function () {
       docs.onSnapshot(function (doc) {
-        likeUsers.innerHTML = doc.data().like.length
+        const likes = doc.data().like
+        likeUsers.innerHTML = likes.length
       })
     })
   }
