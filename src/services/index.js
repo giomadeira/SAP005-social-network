@@ -144,24 +144,14 @@ export const post = (name, date, text, like, id, userIdPost) => {
        <p class="likeUser grup">${like.length}</p>
      </div> 
     `;
-  const editButton = post.querySelectorAll('.edit');
   const likePost = post.querySelectorAll(".like");
   likePost.forEach((button) => {
     button.addEventListener("click", (e) => {
 
-      const boxPost = e.target.parentNode
-      const likeUsers = boxPost.querySelector(".likeUser")
-      const user = firebase.auth().currentUser.displayName;
-      const docs = firebase.firestore().collection("post").doc(id);
-
-      like.push(user)
-
-      docs.update({
-          like
-        })
-        .then(function () {
-          likeUsers.innerHTML = like
-        })
+      const boxPost = e.target.parentNode;
+      const likeUsers = boxPost.querySelector(".likeUser");
+      const uid = firebase.auth().currentUser.uid
+      likePosts(likeUsers, id, like, uid)
     })
   })
   const deletPost = post.querySelectorAll(".delet");
