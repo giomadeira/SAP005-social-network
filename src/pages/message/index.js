@@ -9,7 +9,7 @@ export const Message = () => {
   const content = () => {
     const contentElement = document.createElement('div');
     contentElement.innerHTML = `
-      <h1>Message!</h1>
+    <img src="images/construc.gif" class="gif"> 
       `;
     return contentElement;
   };
