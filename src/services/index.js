@@ -144,6 +144,17 @@ export const post = (name, date, text, like, id, userIdPost) => {
        <p class="likeUser grup">${like.length}</p>
      </div> 
     `;
+    
+  const likePost = post.querySelectorAll(".like");
+  likePost.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const boxPost = e.target.parentNode;
+      const likeUsers = boxPost.querySelector(".likeUser");
+      const uid = firebase.auth().currentUser.uid
+      likePosts(likeUsers, id, like, uid)
+
+    })
+  })
 
   const deletPost = post.querySelectorAll(".delet");
   deletPost.forEach((button) => {
@@ -199,8 +210,8 @@ export const editPosts = (userIdPost, id, editText, editData, text) => {
   }
 }
 
-  
-export const deletPosts = (userIdPost,id) => {
+
+export const deletPosts = (userIdPost, id) => {
   const docs = firebase.firestore().collection("post").doc(id)
   const uid = firebase.auth().currentUser.uid
 
