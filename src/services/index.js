@@ -198,7 +198,6 @@ export const editPosts = (userIdPost, id, editText, editData, text) => {
         docs.onSnapshot(function (doc) {
           editText.innerHTML = doc.data().text
           editData.innerHTML = doc.data().date
-
         })
       })
     })
